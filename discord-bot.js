@@ -29,6 +29,8 @@ client.login(token);
 client.on("messageCreate", message => {
     console.log("EVENT: messageCreate");
     let m = message, channel = m.channel.id;
+    // Role null exception
+    if (m.roles === null) return;
     // Steward commands
     if ((isSteward(m)) && (m.content === rolesCommand)) updateRoles(m);
     // Auto-moderate specific channels
