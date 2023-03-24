@@ -24,8 +24,7 @@ const client = new Client({
 client.login(token);
 client.on("ready", () => {})
 {
-    const channel = await client.channels.fetch('1088783744967655454')
-    channel.send({content: "I am awake."})
+    client.channels.fetch('1088783744967655454').then(channel => channel.send('I am awake.'))
 }
 client.on("messageCreate", message => {
     console.log("EVENT: messageCreate");
