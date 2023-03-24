@@ -2,13 +2,10 @@
 const stewardRole = "1042033712440815626";
 const botRole = "1087284983435100300";
 // Channel IDs
-const zkChannel = "1007708037101932584";
-const tidiChannel = "1084643315368087632";
+const botChannel = "1088783744967655454";
 const imgChannel = "1007706705347494019";
 // Commands
 const rolesCommand = "!jollyRoles";
-// "Regex"
-const zkString = "https://z";
 // Discord.js
 const { Client, GatewayIntentBits, time } = require("discord.js");
 const { token } = require("./config.json");
@@ -23,33 +20,25 @@ const client = new Client({
     ]
 });
 
-// Events
+/* Events */
 client.login(token);
-//client.on("ready", () => {})
+client.on("ready", () => {})
+{
+    const channel = await client.channels.fetch('1088783744967655454')
+    channel.send({content: "I am awake."})
+}
 client.on("messageCreate", message => {
     console.log("EVENT: messageCreate");
     let m = message, channel = m.channel.id;
-    // Role null exception
-    if (m.roles === null) return;
-    // Steward commands
-    if ((isSteward(m)) && (m.content === rolesCommand)) updateRoles(m);
-    // Auto-moderate specific channels
-    else if ((channel === zkChannel)   && (!m.content.startsWith(zkString)))  moderateMessage(message);
-    else if ((channel === tidiChannel) && (m.content.length > 1))             moderateMessage(message);
-    else if ((channel === imgChannel)  && (m.attachments.size === 0))         moderateMessage(message);
+    if ((channel === botChannel) && (isSteward(m)) && (m.content === rolesCommand)) updateRoles(m);
+    else if ((channel === imgChannel)  && (m.attachments.size === 0)) moderateMessage(message);
 })
 
-// Functions
+/* Functions */
 function isSteward(message)
 {
     console.log("isSteward()");
     if (message.member.roles.cache.some(role => role.id === stewardRole)) return(true);
-    return(false);
-}
-function isBot(member)
-{
-    console.log("isBot()");
-    if (member.roles.cache.has(botRole)) return(true);
     return(false);
 }
 function updateRoles(message)
@@ -97,6 +86,12 @@ function calculateDayDelta(a, b)
     const time1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     const time2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
     return Math.floor((time2 - time1) / msPerDay);
+}
+function isBot(member)
+{
+    console.log("isBot()");
+    if (member.roles.cache.has(botRole)) return(true);
+    return(false);
 }
 function moderateMessage(message)
 {
