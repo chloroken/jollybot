@@ -42,6 +42,7 @@ client.login(token);
 client.on("messageCreate", message => {
     console.log("EVENT: messageCreate");
     let m = message, channel = m.channel.id;
+    if (isBot(m)) return;
     if ((channel === botChannel) && (isAdmin(m)) && (m.content === rolesCommand)) updateRoles(m);
     else if ((channel === imgChannel)  && (m.attachments.size === 0)) moderateMessage(message);
     else if ((channel === zkChannel)  && (!m.content.startsWith("https://zk"))) moderateMessage(message);
@@ -73,7 +74,7 @@ client.on(Events.InteractionCreate, async interaction => {
 /* Functions */
 function isAdmin(message)
 {
-    console.log("isSteward()");
+    console.log("isAdmin()");
     if (message.member.roles.cache.some(role => role.id === adminRole)) return(true);
     return(false);
 }
@@ -123,10 +124,10 @@ function calculateDayDelta(a, b)
     const time2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
     return Math.floor((time2 - time1) / msPerDay);
 }
-function isBot(member)
+function isBot(message)
 {
     console.log("isBot()");
-    if (member.roles.cache.has(botRole)) return(true);
+    if (message.member.roles.cache.some(role => role.id === botRole)) return(true);
     return(false);
 }
 function moderateMessage(message)
