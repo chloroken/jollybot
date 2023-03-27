@@ -75,7 +75,7 @@ client.on(Events.InteractionCreate, async interaction => {
 function isAdmin(message)
 {
     console.log("isAdmin()");
-    if (message.member.roles.cache.some(role => role.id === adminRole)) return(true);
+    if (message.member.roles.cache.has(adminRole)) return(true);
     return(false);
 }
 function updateRoles(message)
@@ -127,7 +127,7 @@ function calculateDayDelta(a, b)
 function isBot(message)
 {
     console.log("isBot()");
-    if (message.member.roles.cache.some(role => role.id === botRole)) return(true);
+    if (message.member.roles.cache.has(botRole)) return(true);
     return(false);
 }
 function moderateMessage(message)
