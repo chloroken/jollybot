@@ -89,7 +89,7 @@ function updateRoles(message)
         let id = fetchRoleID(member);
         // Validate operation
         if (member.roles.cache.has(id)) return;
-        if (isBot(member)) return;
+        if (isBot(message)) return;
         // Adjust role
         member.roles.add(id).catch(console.error);
         console.log("updateRoles(): applied new role")
